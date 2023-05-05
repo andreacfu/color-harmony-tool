@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{../static/css/style.css}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+    :root {
+    --complimentary-color: [(${complimentaryRectColor})];
+    --mono-child-0: [(${monoRectColor0})];
+    --mono-child-1: [(${monoRectColor1})];
+    --mono-child-2: [(${monoRectColor2})];
+    --mono-child-3: [(${monoRectColor3})];
+    --mono-child-4: [(${monoRectColor4})];
+    }
+    </style>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+
+<h1>Color Harmony Tool</h1>
+<form action = "/submitted" method = "post">
+    <label id="YourColor"> your color: </label><br/>
+    <input type = "text" name = "inputColor" />
+    <br/>
+
+        <label id="Complimentary"> complimentary:
+            <input type="checkbox" id="complimentaryCheckbox" name="complimentaryCalculation" value="selected">
+        </label>
+        <label id="Monochrome"> monochrome:
+            <input type="checkbox" id="monochromeCheckbox" name="monochromeCalculation" value="selected">
+        </label>
+
+    <br/>
+    <button type = "submit"> Submit! </button>
+    <br/>
+    <br/>
+    <label id="Simulate Protanopia"> Simulate Protanopia:
+        <input type="radio" id="protanopia" name="colorblindOpt" value="p">
+    </label>
+    <br/>
+    <label id="Simulate Deuteranopia"> Simulate Deuteranopia:
+        <input type="radio" id="deuteranopia" name="colorblindOpt" value="d">
+    </label>
+    <br/>
+    <label id="Simulate Tritanopia"> Simulate Tritanopia:
+        <input type="radio" id="tritanopia" name="colorblindOpt" value="t">
+    </label>
+
+    <p th:text="${error}"></p>
+
+
+    <div class = 'palette-container'>
+        <div th:if = "${complimentaryBoxTicked}">
+            <h3> Complimentary Color</h3>
+            <div class="square">
+                <label th:text="${complimentaryResult}"></label>
+            </div>
+        </div>
+
+        <div th:if = "${monochromeBoxTicked}">
+            <h3> Monochrome Palette</h3>
+            <!-- if there are no colorblindness options selected -->
+            <div th:unless = "${colorblindOpt}" >
+                 <div class='parent'>
+                    <div class='child mono0'></div>
+                    <div class='child mono1'></div>
+                    <div class='child mono2'></div>
+                    <div class='child mono3'></div>
+                    <div class='child mono4'></div>
+                 </div>
+            </div>
+            <div th:if = "${colorblindOpt}" >
+                    <script th:inline="javascript">
+                        function myFunction() {
+                        console.log("script is being run");
+                        var color0 = [[${monoRectColor0}]];
+                        var color1 = [[${monoRectColor1}]];
+                        var color2 = [[${monoRectColor2}]];
+                        var color3 = [[${monoRectColor3}]];
+                        var color4 = [[${monoRectColor4}]];
+                        // change colors into rgb objects
+
+                        var colors = [color0, color1, color2, color3, color4];
+                        // const simulatedColors = colors.map(color => chroma(color).luminance(0.5).hex());
+                        console.log(colors);
+                        // console.log(simulatedColors)
+                        console.log("js script being run! ");
+                    }
+                </script>
+
+                <script src="https://cdn.jsdelivr.net/npm/@bjornlu/colorblind" th:inline="javascript" defer onload="myFunction()">
+
+                  console.log("hello2");
+
+
+                </script>
+            </div>
+
+
+        </div>
+    </div>
+
+</form>
+</body>
+
+</html>
